@@ -210,6 +210,15 @@ struct Func {
 
         return {.error = false, .out = out};
     }
+
+    static Out keywords(std::vector<Lexer> code) {
+        if (code.empty()) return {.error = true};
+
+        if (code[0].lexerdata == "end") return {.error = false, .out = "end;"};
+        if (code[0].lexerdata == "else") return {.error = false, .out = "else;"};
+
+        return {.error = true};
+    }
 } static Func;
 
 std::map<int, std::vector<std::string>> parserfunc(std::map<int, std::vector<Lexer>> code) {
@@ -234,6 +243,13 @@ std::map<int, std::vector<std::string>> parserfunc(std::map<int, std::vector<Lex
         }
 
         token = Func::loop(parser);
+        if (!token.error) {
+            tokens.push_back(token.out);
+            out[line] = tokens;
+            continue;
+        }
+
+        token = Func::keywords(parser);
         if (!token.error) {
             tokens.push_back(token.out);
             out[line] = tokens;
