@@ -76,14 +76,7 @@ struct Func {
     }
 
     struct If {
-        enum Operator {
-            iseq,   // ==
-            noteq,  // !=
-            unk     // ?
-        };
-
-        If::Operator ifoperator;
-        std::string left, right;
+        std::string left, op1, right, op2;
     };
 
     static Out equal(std::vector<Lexer> code) {
@@ -97,47 +90,57 @@ struct Func {
         bool right = false;
 
         for (size_t size = 0; size < code.size(); size++) {
-            if (code[size].lexerdata == "&&" && right) {
-                datas.push_back(data);
-                data.ifoperator = If::Operator::unk;
-                data.left = "";
-                data.right = "";
-                right = false;
+            if (code[size].lexerdata == "==" ||
+                code[size].lexerdata == "!=" ||
+                code[size].lexerdata == "&&" ||
+                code[size].lexerdata == "||") {
+
+                if (data.op1.empty()) {
+                    data.op1 = code[size].lexerdata;
+                    right = true;
+                } else if (data.op2.empty()) {
+                    data.op2 = code[size].lexerdata;
+                    right = false;
+                    datas.push_back(data);
+                    data.op1 = "";
+                    data.op2 = "";
+                    data.left = "";
+                    data.right = "";
+                }
                 continue;
             }
 
-            else if (code[size].lexertype == Lexer::Type::Operator && !right) {
-                if (code[size].lexerdata == "==") data.ifoperator = If::Operator::iseq;
-                else if (code[size].lexerdata == "!=") data.ifoperator = If::Operator::noteq;
-                else continue;
-                right = true;
-                continue;
+            if (right) data.right += code[size].lexerdata;
+            else data.left += code[size].lexerdata;
+        }
+
+        if (!data.left.empty() || !data.right.empty() || !data.op1.empty() || !data.op2.empty()) datas.push_back(data);
+
+        std::string out = "if {\n";
+        std::string opp2 = "&&";
+
+        for (auto& [left, op1, right, op2] : datas) {
+            if (right.empty()) right = "1";
+            out += "\tcmp " + left + " " + right + ";\n";
+            if (opp2 == "||") {
+                if (op1 == "==") out += "\tje true;\n";
+                else if (op1 == "!=") out += "\tjne true;\n";
+                else if (op1 == "&&") out += "\tand true;\n";
+                else if (op1 == "||") out += "\tor true;\n";
+
+                if (!opp2.empty() && opp2 != op2) out += "\tjmp false;\n";
+                else opp2 = op2;
+            } else if (opp2 == "&&") {
+                if (op1 == "==" || op1 == "&&") out += "\tjne false;\n";
+                else if (op1 == "!=" || op1 == "||") out += "\tje false;\n";
+
+                if (!opp2.empty() && opp2 != op2) out += "\tjmp true;\n";
+                else opp2 = op2;
             }
-
-            if (!right) data.left += code[size].lexerdata;
-            else data.right += code[size].lexerdata;
+            if (!op2.empty()) opp2 = op2;
         }
 
-        if (!data.right.empty()) {
-            datas.push_back(data);
-            data.right = "";
-        }
-
-        std::string out = "if (";
-        for (size_t size = 0; size < datas.size(); size++) {
-            data = datas[size];
-
-            std::string op;
-            if (data.ifoperator == If::Operator::iseq) op = "==";
-            else if (data.ifoperator == If::Operator::noteq) op = "!=";
-            else return {.error = true};
-
-            if (size > 0) {
-                out += "&&(";
-            }
-
-            out += data.left + op + data.right + ")";
-        }
+        out += "};";
 
         return {.error = false, .out = out};
     }
