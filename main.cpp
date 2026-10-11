@@ -1,6 +1,7 @@
 #include "lexer.hpp"
 #include "parser.hpp"
 #include <ios>
+#include <ostream>
 #include <sstream>
 #include <fstream>
 #include <iostream>
@@ -65,15 +66,14 @@ int main(int argc, char* argv[]) {
     }
     output << "---\n" << std::endl;
 
-    std::map<int, std::vector<std::string>> code2 = parserfunc(code1);
+    std::vector<std::string> code2 = parserfunc(code1);
 
     output << "PARSER: " << "\n\n";
-    for (const auto& [line, data] : code2) {
-        output << "Line: " << line+1 << "\n";
-        for (size_t size = 0; size < data.size(); size++) output << data[size] << "\n";
+    for (const std::string& data : code2) {
+        output << data;
         output << "\n";
     }
-    output << "---";
+    output << "\n---";
 
     input.close();
     output.close();
