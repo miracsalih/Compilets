@@ -6,76 +6,6 @@ Type: Keyword
 Op  : OPERATÖR DEĞİL
 Data: if
 
-Type: Number
-Op  : OPERATÖR DEĞİL
-Data: 12
-
-Type: Operator
-Op  : OPERATÖR
-Data: ==
-
-Type: Number
-Op  : OPERATÖR DEĞİL
-Data: 12
-
-Line: 2
-
-Type: Keyword
-Op  : OPERATÖR DEĞİL
-Data: if
-
-Type: Number
-Op  : OPERATÖR DEĞİL
-Data: 12
-
-Type: Operator
-Op  : OPERATÖR
-Data: !=
-
-Type: Number
-Op  : OPERATÖR DEĞİL
-Data: 11
-
-Line: 3
-
-Type: Keyword
-Op  : OPERATÖR DEĞİL
-Data: if
-
-Type: Number
-Op  : OPERATÖR DEĞİL
-Data: 12
-
-Type: Operator
-Op  : OPERATÖR
-Data: ==
-
-Type: Number
-Op  : OPERATÖR DEĞİL
-Data: 12
-
-Type: Keyword
-Op  : OPERATÖR DEĞİL
-Data: &&
-
-Type: Number
-Op  : OPERATÖR DEĞİL
-Data: 12
-
-Type: Operator
-Op  : OPERATÖR
-Data: !=
-
-Type: Number
-Op  : OPERATÖR DEĞİL
-Data: 11
-
-Line: 4
-
-Type: Keyword
-Op  : OPERATÖR DEĞİL
-Data: if
-
 Type: Keyword
 Op  : OPERATÖR DEĞİL
 Data: a
@@ -88,20 +18,115 @@ Type: Number
 Op  : OPERATÖR DEĞİL
 Data: 54
 
+Line: 2
+
+Type: Keyword
+Op  : OPERATÖR DEĞİL
+Data: if
+
+Type: Number
+Op  : OPERATÖR DEĞİL
+Data: 12
+
+Type: Operator
+Op  : OPERATÖR
+Data: ==
+
+Type: Number
+Op  : OPERATÖR DEĞİL
+Data: 12
+
+Line: 3
+
+Type: Keyword
+Op  : OPERATÖR DEĞİL
+Data: if
+
+Type: Number
+Op  : OPERATÖR DEĞİL
+Data: 12
+
+Type: Operator
+Op  : OPERATÖR
+Data: !=
+
+Type: Number
+Op  : OPERATÖR DEĞİL
+Data: 11
+
+Line: 4
+
+Type: Keyword
+Op  : OPERATÖR DEĞİL
+Data: if
+
+Type: Number
+Op  : OPERATÖR DEĞİL
+Data: 12
+
+Type: Operator
+Op  : OPERATÖR
+Data: ==
+
+Type: Number
+Op  : OPERATÖR DEĞİL
+Data: 12
+
+Line: 5
+
+Type: Keyword
+Op  : OPERATÖR DEĞİL
+Data: if
+
+Type: Number
+Op  : OPERATÖR DEĞİL
+Data: 12
+
+Type: Operator
+Op  : OPERATÖR
+Data: !=
+
+Type: Number
+Op  : OPERATÖR DEĞİL
+Data: 12
+
 ---
 
 PARSER: 
 
 Line: 1
-if (12==12)
+if {
+	cmp a 54;
+	jne false;
+	jmp true;
+};
 
 Line: 2
-if (12!=11)
+if {
+	cmp 12 12;
+	jne false;
+	jmp true;
+};
 
 Line: 3
-if (12==12)&&(12!=11)
+if {
+	cmp 12 11;
+	je false;
+	jmp true;
+};
 
 Line: 4
-if (a==54)
+if {
+	cmp 12 12;
+	jne false;
+	jmp true;
+};
+
+Line: 5
+if {
+	cmp 12 12;
+	je false;
+	jmp true;
+};
 
 ---
