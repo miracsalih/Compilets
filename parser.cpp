@@ -144,6 +144,72 @@ struct Func {
 
         return {.error = false, .out = out};
     }
+
+    static Out loop(std::vector<Lexer> code) {
+        if (code.empty()) return {.error = true};
+        
+        if (code[0].lexerdata != "while") return {.error = true};
+        
+        code.erase(code.begin());
+        std::vector<Func::If> datas;
+        Func::If data;
+        bool right = false;
+
+        for (size_t size = 0; size < code.size(); size++) {
+            if (code[size].lexerdata == "==" ||
+                code[size].lexerdata == "!=" ||
+                code[size].lexerdata == "&&" ||
+                code[size].lexerdata == "||") {
+
+                if (data.op1.empty()) {
+                    data.op1 = code[size].lexerdata;
+                    right = true;
+                } else if (data.op2.empty()) {
+                    data.op2 = code[size].lexerdata;
+                    right = false;
+                    datas.push_back(data);
+                    data.op1 = "";
+                    data.op2 = "";
+                    data.left = "";
+                    data.right = "";
+                }
+                continue;
+            }
+
+            if (right) data.right += code[size].lexerdata;
+            else data.left += code[size].lexerdata;
+        }
+
+        if (!data.left.empty() || !data.right.empty() || !data.op1.empty() || !data.op2.empty()) datas.push_back(data);
+
+        std::string out = "while {\n";
+        std::string opp2 = "&&";
+
+        for (auto& [left, op1, right, op2] : datas) {
+            if (right.empty()) right = "1";
+            out += "\tcmp " + left + " " + right + ";\n";
+            if (opp2 == "||") {
+                if (op1 == "==") out += "\tje true;\n";
+                else if (op1 == "!=") out += "\tjne true;\n";
+                else if (op1 == "&&") out += "\tand true;\n";
+                else if (op1 == "||") out += "\tor true;\n";
+
+                if (!opp2.empty() && opp2 != op2) out += "\tjmp false;\n";
+                else opp2 = op2;
+            } else if (opp2 == "&&") {
+                if (op1 == "==" || op1 == "&&") out += "\tjne false;\n";
+                else if (op1 == "!=" || op1 == "||") out += "\tje false;\n";
+
+                if (!opp2.empty() && opp2 != op2) out += "\tjmp true;\n";
+                else opp2 = op2;
+            }
+            if (!op2.empty()) opp2 = op2;
+        }
+
+        out += "};";
+
+        return {.error = false, .out = out};
+    }
 } static Func;
 
 std::map<int, std::vector<std::string>> parserfunc(std::map<int, std::vector<Lexer>> code) {
@@ -161,6 +227,13 @@ std::map<int, std::vector<std::string>> parserfunc(std::map<int, std::vector<Lex
         }
 
         token = Func::equal(parser);
+        if (!token.error) {
+            tokens.push_back(token.out);
+            out[line] = tokens;
+            continue;
+        }
+
+        token = Func::loop(parser);
         if (!token.error) {
             tokens.push_back(token.out);
             out[line] = tokens;
