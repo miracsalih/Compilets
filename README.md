@@ -1,6 +1,6 @@
-# MQuaLix Derleyici
+# Compilets Derleyici
 
-Bu belge, MQuaLix dil derleyicisinin (`compiler.cpp`) nasıl kullanılacağını, hangi argümanlarla çalıştırılacağını ve olası hata durumlarını açıklar.
+Bu belge, Compilets derleyicisinin nasıl kullanılacağını, hangi argümanlarla çalıştırılacağını ve olası hata durumlarını açıklar.
 
 ## 1. Çalıştırma
 
@@ -11,7 +11,7 @@ Derleyici, komut satırından aşağıdaki formatta çağrılır:
 
 ### Argümanlar:
 
-- `<girdi_dosyası>`: İşlenecek MQuaLix kaynak kod dosyasının yolu.
+- `<girdi_dosyası>`: İşlenecek Compilets kaynak kod dosyasının yolu.
 - `<çıktı_dosyası>`: Token analiz sonuçlarının ve işlem çıktılarının yazılacağı dosyanın yolu.
 
 ### Örnek Kullanım:
