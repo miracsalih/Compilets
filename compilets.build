@@ -1,0 +1,7 @@
+mode: normal
+workdir: Compilets
+arguments: ~/Masaüstü/Projeler/Compilets/test.micrap
+arguments: ~/Masaüstü/Projeler/Compilets/test.micrab
+lang: cpp
+compile
+run
