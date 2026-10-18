@@ -1,6 +1,6 @@
-# MQuaLix Derleyici
+# Compilets Derleyici
 
-MQuaLix dilinin ön uç (front-end) derleyicisi. Bu araç, MQuaLix kaynak kod dosyalarını okuyarak sözcüksel analiz (lexical analysis) yapar ve tokenları bir çıktı dosyasına yazar.
+Compilets dilinin ön uç (front-end) derleyicisi. Bu araç, MicraP kaynak kod dosyalarını okuyarak sözcüksel analiz (lexical analysis) yapar ve tokenları bir çıktı dosyasına yazar.
 
 ## 🚀 Hızlı Başlangıç
 
@@ -183,7 +183,7 @@ if x + 10 ;        # HATA -18: Koşulda toplama yapılamaz
 
 ## 🔗 Bağlantılar
 
-- [Proje Sayfası](https://github.com/miracsalih/MQuaLix)
+- [Proje Sayfası](https://github.com/miracsalih/Compilets)
 - [LGPL-2.1 Lisans](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
 
 ## 📄 Lisans
