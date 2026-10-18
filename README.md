@@ -190,7 +190,7 @@ if x + 10 ;        # HATA -18: Koşulda toplama yapılamaz
 
 Bu proje LGPL-2.1 lisansı altında lisanslanmıştır.
 
-Telif Hakkı (c) 2026 Miraç Salih İşler
+Telif Hakkı (c) 2026  Miraç Salih İşler
 
 ## Yapılan Değişiklikler:
 
