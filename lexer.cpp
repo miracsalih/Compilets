@@ -158,21 +158,12 @@ std::map<int, std::vector<Lexer>> lexerfunc(std::stringstream& code) {
                 if (isOperator(j)) newtype = Lexer::Op::yesop;
                 else newtype = Lexer::Op::noop;
 
-                if (mode == Mode::normal) {
-                    if (op != newop) {
-                        if (!k.empty()) {
-                            lexerlayer2.push_back({.lexerop = op, .lexerdata = k});
-                            k = "";
-                        }
-                        op = newop;
-                    } else {
-                        if (newop) {
-                            if (!k.empty()) {
-                                lexerlayer2.push_back({.lexerop = op, .lexerdata = k});
-                                k = "";
-                            }
-                        }
+                if (mode == Mode::normal && op != newtype) {
+                    if (!k.empty()) {
+                        tokensout.push_back({.lexerop = op, .lexerdata = k});
+                        k = "";
                     }
+                    op = newtype;
                 }
 
                 if (j == '\"') {
